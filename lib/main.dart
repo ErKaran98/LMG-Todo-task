@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import 'data/models/todo_model.dart';
+import 'bindings/todo_binding.dart';
 import 'data/local/hive_service.dart';
+import 'data/models/todo_model.dart';
 import 'modules/todo/views/todo_list_view.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Hive.initFlutter();
   Hive.registerAdapter(TodoModelAdapter());
   await HiveService.openTodoBox();
-
   runApp(const MyApp());
 }
 
@@ -20,9 +20,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: TodoListView(),
+      initialBinding: TodoBinding(),
+      home: const TodoListView(),
     );
   }
 }

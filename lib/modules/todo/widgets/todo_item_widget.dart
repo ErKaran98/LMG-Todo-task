@@ -5,6 +5,7 @@ class TodoItemWidget extends StatelessWidget {
   final String description;
   final String status;
   final String time;
+  final VoidCallback onDelete;
 
   const TodoItemWidget({
     super.key,
@@ -12,6 +13,7 @@ class TodoItemWidget extends StatelessWidget {
     required this.description,
     required this.status,
     required this.time,
+    required this.onDelete,
   });
 
   @override
@@ -49,9 +51,7 @@ class TodoItemWidget extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {
-
-                },
+                onPressed: onDelete,
                 icon: const Icon(
                   Icons.delete_outline,
                   color: Colors.red,
