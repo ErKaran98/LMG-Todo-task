@@ -24,4 +24,23 @@ class TodoController extends GetxController {
     todo.delete();
     loadTodos();
   }
+
+  void addTodo({
+    required String title,
+    required String description,
+    required int totalSeconds,
+  }) {
+    final todo = TodoModel(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      title: title,
+      description: description,
+      totalDuration: totalSeconds,
+      remainingDuration: totalSeconds,
+      status: 'TODO',
+      createdAt: DateTime.now(),
+    );
+
+    _todoBox.add(todo);
+    loadTodos();
+  }
 }

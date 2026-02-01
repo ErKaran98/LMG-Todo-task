@@ -105,15 +105,18 @@ class _StatusChip extends StatelessWidget {
     switch (status) {
       case 'IN-PROGRESS':
         backgroundColor = Colors.orange.withOpacity(0.15);
-        textColor = Colors.orange;
+        textColor = Colors.orange.shade700;
         break;
+
       case 'DONE':
         backgroundColor = Colors.green.withOpacity(0.15);
-        textColor = Colors.green;
+        textColor = Colors.green.shade700;
         break;
+
+      case 'TODO':
       default:
-        backgroundColor = Colors.grey.withOpacity(0.15);
-        textColor = Colors.grey;
+        backgroundColor = Colors.deepPurple.withOpacity(0.15);
+        textColor = Colors.deepPurple;
     }
 
     return Container(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lmg_todo_task/core/utils/dialog_utils.dart' show DialogUtils;
+import 'package:lmg_todo_task/modules/todo/views/todo_form_sheet.dart';
 
 import '../controllers/todo_controller.dart';
 import '../widgets/todo_item_widget.dart';
@@ -20,6 +22,11 @@ class TodoListView extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          Get.bottomSheet(
+            const TodoFormSheet(),
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+          );
         },
         child: const Icon(Icons.add),
       ),
@@ -45,7 +52,11 @@ class TodoListView extends StatelessWidget {
                 description: todo.description,
                 status: todo.status,
                 time: _formatTime(todo.remainingDuration),
-                onDelete: () => controller.deleteTodo(todo),
+                onDelete: () {
+                  DialogUtils.showDeleteConfirmation(
+                    onConfirm: () => controller.deleteTodo(todo),
+                  );
+                },
               );
             },
           ),
