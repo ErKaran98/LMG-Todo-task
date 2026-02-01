@@ -57,6 +57,13 @@ class TodoListView extends StatelessWidget {
                     onConfirm: () => controller.deleteTodo(todo),
                   );
                 },
+                onTap: () {
+                  Get.bottomSheet(
+                    TodoFormSheet(todo: todo),
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                  );
+                },
               );
             },
           ),

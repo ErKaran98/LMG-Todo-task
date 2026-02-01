@@ -6,6 +6,7 @@ class TodoItemWidget extends StatelessWidget {
   final String status;
   final String time;
   final VoidCallback onDelete;
+  final VoidCallback onTap;
 
   const TodoItemWidget({
     super.key,
@@ -14,6 +15,7 @@ class TodoItemWidget extends StatelessWidget {
     required this.status,
     required this.time,
     required this.onDelete,
+    required this.onTap,
   });
 
   @override
@@ -22,71 +24,74 @@ class TodoItemWidget extends StatelessWidget {
 
     final isSmallScreen = screenWidth < 360;
 
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 6,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: isSmallScreen ? 14 : 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              IconButton(
-                onPressed: onDelete,
-                icon: const Icon(
-                  Icons.delete_outline,
-                  color: Colors.red,
-                ),
-              ),
-            ],
-          ),
-
-          if (description.isNotEmpty) ...[
-            const SizedBox(height: 4),
-            Text(
-              description,
-              style: TextStyle(
-                fontSize: isSmallScreen ? 12 : 14,
-                color: Colors.grey[700],
-              ),
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 6,
+              offset: const Offset(0, 3),
             ),
           ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: isSmallScreen ? 14 : 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: onDelete,
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: Colors.red,
+                  ),
+                ),
+              ],
+            ),
 
-          const SizedBox(height: 12),
-
-          Row(
-            children: [
-              _StatusChip(status: status),
-              const Spacer(),
+            if (description.isNotEmpty) ...[
+              const SizedBox(height: 4),
               Text(
-                time,
+                description,
                 style: TextStyle(
                   fontSize: isSmallScreen ? 12 : 14,
-                  fontWeight: FontWeight.w500,
+                  color: Colors.grey[700],
                 ),
               ),
             ],
-          ),
-        ],
+
+            const SizedBox(height: 12),
+
+            Row(
+              children: [
+                _StatusChip(status: status),
+                const Spacer(),
+                Text(
+                  time,
+                  style: TextStyle(
+                    fontSize: isSmallScreen ? 12 : 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

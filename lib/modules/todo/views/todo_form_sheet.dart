@@ -19,6 +19,8 @@ class _TodoFormSheetState extends State<TodoFormSheet> {
 
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _minuteController = TextEditingController();
+  final _secondController = TextEditingController();
 
   int minutes = 0;
   int seconds = 0;
@@ -30,8 +32,16 @@ class _TodoFormSheetState extends State<TodoFormSheet> {
     if (widget.todo != null) {
       _titleController.text = widget.todo!.title;
       _descriptionController.text = widget.todo!.description;
-      minutes = widget.todo!.totalDuration ~/ 60;
-      seconds = widget.todo!.totalDuration % 60;
+
+      final totalSeconds = widget.todo!.totalDuration;
+      final m = totalSeconds ~/ 60;
+      final s = totalSeconds % 60;
+
+      minutes = m;
+      seconds = s;
+
+      _minuteController.text = m.toString();
+      _secondController.text = s.toString();
     }
   }
 
@@ -39,9 +49,10 @@ class _TodoFormSheetState extends State<TodoFormSheet> {
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
+    _minuteController.dispose();
+    _secondController.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<TodoController>();
@@ -123,6 +134,7 @@ class _TodoFormSheetState extends State<TodoFormSheet> {
                   children: [
                     Expanded(
                       child: TextFormField(
+                        controller: _minuteController,
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
                           labelText: 'Minutes (0–5)',
@@ -136,6 +148,7 @@ class _TodoFormSheetState extends State<TodoFormSheet> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: TextFormField(
+                        controller: _secondController,
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
                           labelText: 'Seconds (0–59)',
@@ -191,13 +204,24 @@ class _TodoFormSheetState extends State<TodoFormSheet> {
                             return;
                           }
 
-                          controller.addTodo(
-                            title: _titleController.text.trim(),
-                            description: _descriptionController.text.trim(),
-                            totalSeconds: totalSeconds,
-                          );
-
-                          Get.back();
+                          if (widget.todo == null) {
+                            controller.addTodo(
+                              title: _titleController.text.trim(),
+                              description: _descriptionController.text.trim(),
+                              totalSeconds: totalSeconds,
+                            );
+                            Get.back();
+                            SnackbarUtils.showSuccess('Todo added successfully!');
+                          } else {
+                            controller.updateTodo(
+                              widget.todo!,
+                              title: _titleController.text.trim(),
+                              description: _descriptionController.text.trim(),
+                              totalSeconds: totalSeconds,
+                            );
+                            Get.back();
+                            SnackbarUtils.showSuccess('Todo updated successfully!');
+                          }
                         },
                         child: const Text(
                           'Save',

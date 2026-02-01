@@ -43,4 +43,29 @@ class TodoController extends GetxController {
     _todoBox.add(todo);
     loadTodos();
   }
+  void updateTodo(
+      TodoModel oldTodo, {
+        required String title,
+        required String description,
+        required int totalSeconds,
+      }) {
+    final index = _todoBox.values.toList().indexWhere(
+          (todo) => todo.id == oldTodo.id,
+    );
+
+    if (index == -1) return;
+
+    final updatedTodo = TodoModel(
+      id: oldTodo.id,
+      title: title,
+      description: description,
+      totalDuration: totalSeconds,
+      remainingDuration: totalSeconds,
+      status: oldTodo.status,
+      createdAt: oldTodo.createdAt,
+    );
+
+    _todoBox.putAt(index, updatedTodo);
+    loadTodos();
+  }
 }
