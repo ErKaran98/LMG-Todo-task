@@ -19,8 +19,36 @@ class TodoListView extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF6F2FA),
       appBar: AppBar(
-        title: const Text('Todos'),
-        centerTitle: true,
+        title: Obx(() {
+          if (!controller.isSearching.value) {
+            return const Text('Todos');
+          }
+
+          return TextField(
+            autofocus: true,
+            decoration: const InputDecoration(
+              hintText: 'Search todos...',
+              border: InputBorder.none,
+            ),
+            onChanged: controller.updateSearch,
+          );
+        }),
+        actions: [
+          Obx(() {
+            return IconButton(
+              icon: Icon(
+                controller.isSearching.value
+                    ? Icons.close
+                    : Icons.search,
+              ),
+              onPressed: () {
+                controller.isSearching.value
+                    ? controller.stopSearch()
+                    : controller.startSearch();
+              },
+            );
+          }),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -45,10 +73,10 @@ class TodoListView extends StatelessWidget {
             vertical: 12,
           ),
           child: ListView.separated(
-            itemCount: controller.todos.length,
+            itemCount: controller.filteredTodos.length,
             separatorBuilder: (_, __) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
-              final todo = controller.todos[index];
+              final todo = controller.filteredTodos[index];
               return TodoItemWidget(
                 title: todo.title,
                 description: todo.description,

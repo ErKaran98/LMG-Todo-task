@@ -8,6 +8,8 @@ class TodoController extends GetxController {
   late Box<TodoModel> _todoBox;
 
   final RxList<TodoModel> todos = <TodoModel>[].obs;
+  final RxString searchQuery = ''.obs;
+  final RxBool isSearching = false.obs;
 
   @override
   void onInit() {
@@ -68,4 +70,31 @@ class TodoController extends GetxController {
     _todoBox.putAt(index, updatedTodo);
     loadTodos();
   }
+
+  List<TodoModel> get filteredTodos {
+    if (searchQuery.value.isEmpty) {
+      return todos;
+    }
+
+    final query = searchQuery.value.toLowerCase();
+
+    return todos.where((todo) {
+      return todo.title.toLowerCase().contains(query) ||
+          todo.description.toLowerCase().contains(query);
+    }).toList();
+  }
+
+  void updateSearch(String query) {
+    searchQuery.value = query;
+  }
+
+  void startSearch() {
+    isSearching.value = true;
+  }
+
+  void stopSearch() {
+    isSearching.value = false;
+    searchQuery.value = '';
+  }
+
 }
