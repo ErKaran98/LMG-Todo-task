@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lmg_todo_task/core/utils/dialog_utils.dart' show DialogUtils;
+import 'package:lmg_todo_task/modules/todo/views/todo_detail_view.dart';
 import 'package:lmg_todo_task/modules/todo/views/todo_form_sheet.dart';
 
 import '../controllers/todo_controller.dart';
@@ -16,6 +17,7 @@ class TodoListView extends StatelessWidget {
     final controller = Get.find<TodoController>();
 
     return Scaffold(
+      backgroundColor: const Color(0xFFF6F2FA),
       appBar: AppBar(
         title: const Text('Todos'),
         centerTitle: true,
@@ -58,11 +60,8 @@ class TodoListView extends StatelessWidget {
                   );
                 },
                 onTap: () {
-                  Get.bottomSheet(
-                    TodoFormSheet(todo: todo),
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                  );
+                  Get.to(() => TodoDetailView(todoId: todo.id));
+
                 },
               );
             },
